@@ -15,8 +15,6 @@ public class BootcampWebClientDtoMapper implements IBootcampWebClientDtoMapper {
 
     @Override
     public BootcampWithCapabilityRequest toRequest(Bootcamp bootcamp) {
-        System.out.println("en el to rquest del webclietn");
-        System.out.println(bootcamp);
 
         BootcampWithCapabilityRequest request = new BootcampWithCapabilityRequest();
         request.setBootcampId(bootcamp.getId());
@@ -26,9 +24,6 @@ public class BootcampWebClientDtoMapper implements IBootcampWebClientDtoMapper {
 
     @Override
     public Bootcamp toModel(BootcampWithCapabilityResponse bootcampWithCapabilityResponse) {
-
-        System.out.println("desde el to bottcamp model despues de consulta ========================");
-        System.out.println(bootcampWithCapabilityResponse);
 
         List<Capability> capabilities = bootcampWithCapabilityResponse
                 .getCapabilities()
@@ -44,9 +39,6 @@ public class BootcampWebClientDtoMapper implements IBootcampWebClientDtoMapper {
     }
 
     private Capability toCapability(CapabilityResponse capabilityResponse) {
-
-        System.out.println("desde el to capability en el mapper ================");
-        System.out.println(capabilityResponse);
 
         List<Technology> technologies = capabilityResponse
                 .getTechnologies()

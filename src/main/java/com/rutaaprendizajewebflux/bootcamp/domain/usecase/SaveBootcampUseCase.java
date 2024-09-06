@@ -31,8 +31,8 @@ public class SaveBootcampUseCase implements ISaveBootcampServicePort {
                 .flatMap(bootcamp -> bootcampPersistencePort.findByName(bootcamp.getName())
                         .hasElement()
                         .flatMap(exists -> Boolean.TRUE.equals(exists)
-                        ? Mono.error(new BootcampAlreadyExistsException("El bootcamp ya existe"))
-                        : Mono.just(bootcamp)))
+                            ? Mono.error(new BootcampAlreadyExistsException("El bootcamp ya existe"))
+                            : Mono.just(bootcamp)))
                 .flatMap(bootcamp -> {
                     List<Capability> capabilities = bootcamp.getCapabilities();
 
@@ -58,8 +58,6 @@ public class SaveBootcampUseCase implements ISaveBootcampServicePort {
     Mono<Bootcamp> asociateCapabilitiesWithBootcamp(Bootcamp bootcamp) {
         return capabilityCommunicationPort.asociateCapabilitiesWithBootcamp(bootcamp)
                 .map(booWithRelation -> {
-                    System.out.println("after asociation ============================");
-                    System.out.println(booWithRelation);
                     booWithRelation.setName(bootcamp.getName());
                     booWithRelation.setDescription(bootcamp.getDescription());
                     return booWithRelation;
