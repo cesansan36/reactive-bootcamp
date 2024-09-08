@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 @Repository
-public interface IBootcampRepository extends ReactiveCrudRepository<BootcampEntity, String> {
+public interface IBootcampRepository extends ReactiveCrudRepository<BootcampEntity, Long> {
 
     Mono<BootcampEntity> findByName(String name);
 }

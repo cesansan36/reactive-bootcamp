@@ -6,6 +6,7 @@ import com.rutaaprendizajewebflux.bootcamp.infrastructure.mapper.IBootcampWebCli
 import com.rutaaprendizajewebflux.bootcamp.infrastructure.webclientobjects.response.BootcampWithCapabilityResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
@@ -27,5 +28,38 @@ public class CapabilityWebClientAdapter implements ICapabilityCommunicationPort 
                 .bodyToMono(BootcampWithCapabilityResponse.class)
                 .map(bootcampWebClientMapper::toModel)
                 .onErrorResume(error-> Mono.error(new RuntimeException(error.getMessage())));
+    }
+
+    @Override
+    public Mono<Bootcamp> getCapabilitiesByBootcampId(Long id) {
+        return webClient
+                .get()
+                .uri("/linked-bootcamp-capabilities/{bootcampId}", id)
+                .retrieve()
+                .onStatus( status -> status.is4xxClientError() || status.is5xxServerError(),
+                        clientResponse -> clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody -> Mono.error(new RuntimeException(errorBody))))
+                .bodyToMono(BootcampWithCapabilityResponse.class)
+                .map(bootcampWebClientMapper::toModel)
+                .onErrorResume(Exception.class, ex -> Mono.error(new RuntimeException(ex.getMessage())));
+    }
+
+    @Override
+    public Flux<Bootcamp> findPaginatedBootcampIdsByCapabilityAmount(int page, int size, String direction) {
+        return webClient
+                .get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/linked-bootcamp-capabilities")
+                        .queryParam("page", page)
+                        .queryParam("size", size)
+                        .queryParam("direction", direction)
+                        .build())
+                .retrieve()
+                .onStatus( status -> status.is4xxClientError() || status.is5xxServerError(),
+                        clientResponse -> clientResponse.bodyToMono(String.class)
+                                .flatMap(errorBody -> Mono.error(new RuntimeException(errorBody))))
+                .bodyToFlux(BootcampWithCapabilityResponse.class)
+                .map(bootcampWebClientMapper::toModel)
+                .onErrorResume(Exception.class, ex -> Mono.error(new RuntimeException(ex.getMessage())));
     }
 }

@@ -19,6 +19,7 @@ public class ServiceRouterConfiguration {
     @Bean
     public RouterFunction<ServerResponse> router(IBootcampHandler bootcampHandler) {
         return RouterFunctions.route()
+                .GET("/bootcamp", bootcampHandler::findAllPaginated)
                 .POST("/bootcamp", bootcampHandler::save)
                 .build();
     }
