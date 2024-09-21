@@ -76,14 +76,4 @@ public class Bootcamp {
                 .map(Capability::getName)
                 .toList();
     }
-
-    @Override
-    public String toString() {
-        return "Bootcamp{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", capabilities=" + capabilities +
-                '}';
-    }
 }

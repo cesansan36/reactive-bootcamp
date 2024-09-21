@@ -15,12 +15,4 @@ public class BootcampWithCapabilityResponse {
 
     private Long bootcampId;
     private List<CapabilityResponse> capabilities;
-
-    @Override
-    public String toString() {
-        return "BootcampWithCapabilityResponse{" +
-                "bootcampId=" + bootcampId +
-                ", capabilities=" + capabilities +
-                '}';
-    }
 }

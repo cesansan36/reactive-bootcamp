@@ -55,7 +55,7 @@ public class SaveBootcampUseCase implements ISaveBootcampServicePort {
         return bootcampPersistencePort.save(Mono.just(bootcamp));
     }
 
-    Mono<Bootcamp> asociateCapabilitiesWithBootcamp(Bootcamp bootcamp) {
+    private Mono<Bootcamp> asociateCapabilitiesWithBootcamp(Bootcamp bootcamp) {
         return capabilityCommunicationPort.asociateCapabilitiesWithBootcamp(bootcamp)
                 .map(booWithRelation -> {
                     booWithRelation.setName(bootcamp.getName());

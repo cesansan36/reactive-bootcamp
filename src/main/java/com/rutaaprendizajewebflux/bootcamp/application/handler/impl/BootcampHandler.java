@@ -64,7 +64,7 @@ public class BootcampHandler implements IBootcampHandler {
         String direction = serverRequest.queryParam("direction").filter(ALLOWED_SORT_DIRECTIONS::contains).orElse(DEFAULT_SORT_DIRECTION);
 
         Mono<List<BootcampResponse>> response = readBootcampServicePort
-                .finadAllPaginated(page, size, sortBy, direction)
+                .findAllPaginated(page, size, sortBy, direction)
                 .map(bootcampResponseMapper::toBootcampResponse)
                 .collectSortedList((bootcamp1, bootcamp2) -> {
                     int comparisonResult;

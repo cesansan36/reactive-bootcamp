@@ -24,7 +24,7 @@ public class ReadBootcampUseCase implements IReadBootcampServicePort {
     }
 
     @Override
-    public Flux<Bootcamp> finadAllPaginated(int page, int size, String sortBy, String direction) {
+    public Flux<Bootcamp> findAllPaginated(int page, int size, String sortBy, String direction) {
 
         if(sortBy.equals(ORDER_BY_CAPABILITIES)) {
             return findPaginatedByCapabilityQuantity(page, size, direction);

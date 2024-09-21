@@ -40,13 +40,4 @@ public class Capability {
     public void setTechnologies(List<Technology> technologies) {
         this.technologies = technologies;
     }
-
-    @Override
-    public String toString() {
-        return "Capability{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", technologies=" + technologies +
-                '}';
-    }
 }
