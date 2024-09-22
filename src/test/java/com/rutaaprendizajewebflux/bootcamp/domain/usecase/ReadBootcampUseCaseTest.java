@@ -56,8 +56,6 @@ class ReadBootcampUseCaseTest {
         when(capabilityCommunicationPort.findPaginatedBootcampIdsByCapabilityAmount(anyInt(), anyInt(), anyString()))
                 .thenReturn(Flux.empty());
 
-        when(bootcampPersistencePort.findAllByIds(any(Flux.class))).thenReturn(Flux.empty());
-
         Flux<Bootcamp> result = readBootcampUseCase.findAllPaginated(0, 10, ORDER_BY_CAPABILITIES, "asc");
 
         StepVerifier.create(result)

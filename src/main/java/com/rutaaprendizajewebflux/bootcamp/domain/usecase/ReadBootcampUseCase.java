@@ -39,15 +39,10 @@ public class ReadBootcampUseCase implements IReadBootcampServicePort {
                 .findPaginatedBootcampIdsByCapabilityAmount(page, size, direction)
                 .switchIfEmpty(Flux.error(new CapabilitiesNotFoundException(CAPABILITIES_NOT_FOUND_MESSAGE)));
 
-        Flux<Long> bootcampsIds = bootcampsIdWithCapabilities
-                .map(Bootcamp::getId);
-
-        Flux<Bootcamp> bootcamps = bootcampPersistencePort
-                .findAllByIds(bootcampsIds)
-                .switchIfEmpty(Flux.error(new BootcampNotFoundException(BOOTCAMP_NOT_FOUND_MESSAGE)));
-
         return bootcampsIdWithCapabilities
-                .flatMap(bootcampWithCap -> bootcamps
+                .flatMap(bootcampWithCap -> bootcampPersistencePort
+                        .findAllByIds(bootcampsIdWithCapabilities.map(Bootcamp::getId))
+                        .switchIfEmpty(Flux.error(new BootcampNotFoundException(BOOTCAMP_NOT_FOUND_MESSAGE)))
                         .filter(bootcamp -> bootcamp.getId().equals(bootcampWithCap.getId()))
                         .map(bootcamp -> {
                             bootcamp.setCapabilities(bootcampWithCap.getCapabilities());

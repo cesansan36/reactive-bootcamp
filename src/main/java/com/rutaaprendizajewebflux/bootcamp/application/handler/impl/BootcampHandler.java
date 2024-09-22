@@ -43,9 +43,8 @@ public class BootcampHandler implements IBootcampHandler {
     @Override
     public Mono<ServerResponse> save(ServerRequest serverRequest) {
 
-        Mono<SaveBootcampRequest> request = serverRequest.bodyToMono(SaveBootcampRequest.class);
-
-        Mono<BootcampResponse> response = request
+        Mono<BootcampResponse> response = serverRequest
+                .bodyToMono(SaveBootcampRequest.class)
                 .map(bootcampRequestMapper::toModel)
                 .flatMap(bootcampModel -> saveBootcampServicePort.save(Mono.just(bootcampModel)))
                 .map(bootcampResponseMapper::toBootcampResponse);
