@@ -38,6 +38,7 @@ public class ServiceRouterConfiguration {
         return builder -> builder
                 .operationId("saveBootcamp")
                 .summary("⭐ Save Bootcamp")
+                .tag("⭐ Bootcamp")
                 .requestBody(requestBodyBuilder().implementation(SaveBootcampRequest.class))
                 .response(responseBuilder().responseCode("200").description("OK").implementation(BootcampResponse.class));
     }

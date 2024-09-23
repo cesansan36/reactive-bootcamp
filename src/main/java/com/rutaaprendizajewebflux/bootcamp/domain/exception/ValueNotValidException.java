@@ -1,8 +1,11 @@
 package com.rutaaprendizajewebflux.bootcamp.domain.exception;
 
-public class ValueNotValidException extends RuntimeException {
+import com.rutaaprendizajewebflux.bootcamp.configuration.exceptionconfiguration.CustomException;
+import org.springframework.http.HttpStatus;
+
+public class ValueNotValidException extends CustomException {
 
     public ValueNotValidException(String message) {
-        super(message);
+        super(HttpStatus.BAD_REQUEST, message);
     }
 }

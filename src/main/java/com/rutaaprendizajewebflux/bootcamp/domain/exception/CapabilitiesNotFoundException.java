@@ -1,7 +1,10 @@
 package com.rutaaprendizajewebflux.bootcamp.domain.exception;
 
-public class CapabilitiesNotFoundException extends RuntimeException {
+import com.rutaaprendizajewebflux.bootcamp.configuration.exceptionconfiguration.CustomException;
+import org.springframework.http.HttpStatus;
+
+public class CapabilitiesNotFoundException extends CustomException {
     public CapabilitiesNotFoundException (String message) {
-        super(message);
+        super(HttpStatus.NOT_FOUND, message);
     }
 }

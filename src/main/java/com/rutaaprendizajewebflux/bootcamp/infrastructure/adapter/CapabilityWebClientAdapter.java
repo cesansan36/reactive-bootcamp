@@ -2,6 +2,7 @@ package com.rutaaprendizajewebflux.bootcamp.infrastructure.adapter;
 
 import com.rutaaprendizajewebflux.bootcamp.domain.model.Bootcamp;
 import com.rutaaprendizajewebflux.bootcamp.domain.ports.out.ICapabilityCommunicationPort;
+import com.rutaaprendizajewebflux.bootcamp.infrastructure.exception.LinkingProcessException;
 import com.rutaaprendizajewebflux.bootcamp.infrastructure.mapper.IBootcampWebClientDtoMapper;
 import com.rutaaprendizajewebflux.bootcamp.infrastructure.webclientobjects.response.BootcampWithCapabilityResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +25,10 @@ public class CapabilityWebClientAdapter implements ICapabilityCommunicationPort 
                 .retrieve()
                 .onStatus( status -> status.is4xxClientError() || status.is5xxServerError(),
                         response -> response.bodyToMono(String.class)
-                                .flatMap(error -> Mono.error(new RuntimeException("No fue posible asociar las capacidades al bootcamp: " + error))))
+                                .flatMap(error -> Mono.error(new LinkingProcessException("No fue posible asociar las capacidades al bootcamp: " + error))))
                 .bodyToMono(BootcampWithCapabilityResponse.class)
                 .map(bootcampWebClientMapper::toModel)
-                .onErrorResume(error-> Mono.error(new RuntimeException(error.getMessage())));
+                .onErrorResume(error-> Mono.error(new LinkingProcessException(error.getMessage())));
     }
 
     @Override
@@ -38,10 +39,10 @@ public class CapabilityWebClientAdapter implements ICapabilityCommunicationPort 
                 .retrieve()
                 .onStatus( status -> status.is4xxClientError() || status.is5xxServerError(),
                         clientResponse -> clientResponse.bodyToMono(String.class)
-                                .flatMap(errorBody -> Mono.error(new RuntimeException(errorBody))))
+                                .flatMap(errorBody -> Mono.error(new LinkingProcessException(errorBody))))
                 .bodyToMono(BootcampWithCapabilityResponse.class)
                 .map(bootcampWebClientMapper::toModel)
-                .onErrorResume(Exception.class, ex -> Mono.error(new RuntimeException(ex.getMessage())));
+                .onErrorResume(Exception.class, ex -> Mono.error(new LinkingProcessException(ex.getMessage())));
     }
 
     @Override
@@ -57,9 +58,9 @@ public class CapabilityWebClientAdapter implements ICapabilityCommunicationPort 
                 .retrieve()
                 .onStatus( status -> status.is4xxClientError() || status.is5xxServerError(),
                         clientResponse -> clientResponse.bodyToMono(String.class)
-                                .flatMap(errorBody -> Mono.error(new RuntimeException(errorBody))))
+                                .flatMap(errorBody -> Mono.error(new LinkingProcessException(errorBody))))
                 .bodyToFlux(BootcampWithCapabilityResponse.class)
                 .map(bootcampWebClientMapper::toModel)
-                .onErrorResume(Exception.class, ex -> Mono.error(new RuntimeException(ex.getMessage())));
+                .onErrorResume(Exception.class, ex -> Mono.error(new LinkingProcessException(ex.getMessage())));
     }
 }
